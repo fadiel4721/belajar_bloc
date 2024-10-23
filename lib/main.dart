@@ -128,14 +128,13 @@ import 'package:belajar_bloc/bloc/device/device_bloc.dart';
 import 'package:belajar_bloc/bloc/auth/auth_bloc.dart';
 import 'package:belajar_bloc/bloc/bilangan_primer/bilangan_primer_cubit.dart';
 import 'package:belajar_bloc/bloc/ganjil_genap/ganjil_genap_cubit.dart';
+import 'package:belajar_bloc/pages/homepage_shopee.dart';
 import 'package:belajar_bloc/pages/login_page.dart';
-
-
 import 'package:belajar_bloc/pages/smart_building.dart';
 import 'package:belajar_bloc/visibility_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:go_router/go_router.dart';
 import 'counter_cubit.dart';
 
 void main() => runApp(const CounterApp());
@@ -145,31 +144,57 @@ class CounterApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider<CounterCubit>(
-            create: (context) => CounterCubit(),
-          ),
-          BlocProvider<VisibilityCubit>(
-            create: (context) => VisibilityCubit(),
-          ),
-          BlocProvider<GanjilGenapCubit>(
-            create: (context) => GanjilGenapCubit(),
-          ),
-          BlocProvider<BilanganPrimerCubit>(
-            create: (context) => BilanganPrimerCubit(),
-          ),
-          BlocProvider<AuthBloc>(
-            create:(context)  =>AuthBloc(),
-          ),
-          BlocProvider<DeviceBloc>(
-            create:(context)  =>DeviceBloc(),
-            child: const SmartBuilding(),
-          )
-        ],
-        child:  LoginPage(),
+    final GoRouter router = GoRouter(
+      initialLocation: '/login',
+      routes: [
+        GoRoute(
+          path: '/login',
+          name: 'login',
+          builder: (context, state) {
+            return LoginPage();
+          },
+        ),
+        GoRoute(
+          path: '/smart_building',
+          name: 'smart_building',
+          builder: (context, state) {
+            return const SmartBuilding();
+          },
+        ),
+        GoRoute(
+          path: '/homepage_shopee',
+          name: 'homepage_shopee',
+          builder: (context, state) {
+            return const HomepageShoope();
+          },
+        )
+      ],
+    );
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<CounterCubit>(
+          create: (context) => CounterCubit(),
+        ),
+        BlocProvider<VisibilityCubit>(
+          create: (context) => VisibilityCubit(),
+        ),
+        BlocProvider<GanjilGenapCubit>(
+          create: (context) => GanjilGenapCubit(),
+        ),
+        BlocProvider<BilanganPrimerCubit>(
+          create: (context) => BilanganPrimerCubit(),
+        ),
+        BlocProvider<AuthBloc>(
+          create: (context) => AuthBloc(),
+        ),
+        BlocProvider<DeviceBloc>(
+          create: (context) => DeviceBloc(),
+        ),
+      ],
+      child: MaterialApp.router(
+        routerConfig: router,
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

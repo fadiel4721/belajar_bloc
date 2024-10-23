@@ -1,9 +1,10 @@
 import 'package:belajar_bloc/bloc/auth/auth_bloc.dart';
-import 'package:belajar_bloc/bloc/device/device_bloc.dart';
-import 'package:belajar_bloc/pages/smart_building.dart';
+// import 'package:belajar_bloc/bloc/device/device_bloc.dart';
+// import 'package:belajar_bloc/pages/smart_building.dart';
 import 'package:belajar_bloc/visibility_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -112,17 +113,8 @@ class LoginPage extends StatelessWidget {
                                 ),
                               );
                             } else if (state is AuthStateLoaded) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      BlocProvider<DeviceBloc>(
-                                    create: (context) => DeviceBloc(),
-                                    child: const SmartBuilding(),
-                                  ),
-                                ),
-                              );
-                            }
+      context.go('/smart_building');
+    }
                           },
                           builder: (context, state) {
                             return ElevatedButton(
@@ -146,9 +138,7 @@ class LoginPage extends StatelessWidget {
                                     }
                                   : null,
                               child: state is AuthStateLoading
-                                  ? const CircularProgressIndicator(
-                                      color: Colors.white,
-                                    )
+                                  ? const Text('Loading...')
                                   : const Text(
                                       'Login',
                                       style: TextStyle(
